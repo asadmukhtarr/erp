@@ -27,9 +27,14 @@ Route::prefix('admin')->middleware('auth')->group(function(){
     Route::prefix('customer')->group(function(){
         // create customer ..
         Route::get('/create','pagesController@create_customer')->name('admin.createcustomer');
+        // for save customer ..
+        Route::post('/save','pagesController@save')->name('save.customer');
         // all customers ..
         Route::get('/all','pagesController@customers')->name('admin.customers');
         // end for end ..
+        Route::get('/delete/{id}','pagesController@salman')->name('delete.customer');
+        Route::get('/edit/{id}','pagesController@edit_salman')->name('edit.customer');
+        Route::get('/update/{id}','pagesController@update_salman')->name('update.customer');
     });
     Route::prefix('application')->group(function(){
         Route::get('/','pagesController@applications')->name('admin.applications');
