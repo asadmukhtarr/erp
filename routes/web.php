@@ -39,6 +39,7 @@ Route::prefix('admin')->middleware('auth')->group(function(){
     Route::prefix('application')->group(function(){
         Route::get('/','pagesController@applications')->name('admin.applications');
         Route::get('/create','pagesController@create_application')->name('create.applications');
+        Route::post('/submissoin','pagesController@submit_applicaiton')->name('submit.application');
     });
     // settings
     Route::get('/settings','pagesController@settings')->name('admin.settings');

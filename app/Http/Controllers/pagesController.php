@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\client;
+use App\Models\applicatoin;
 
 class pagesController extends Controller
 {
@@ -65,11 +66,32 @@ class pagesController extends Controller
     }
     // create applications ..
     public function create_application(){
-        return view('admin.applications.create');
+        $customers = client::all();
+        return view('admin.applications.create',compact('customers'));
     }
     // settings 
     public function settings(){
         return view('admin.settings');
+    }
+    // sub application ..
+    public function submit_applicaiton(Request $request){
+        $validated = $request->validate([
+            'destination' => 'required',
+            'vt' => 'required',
+            'application_charges' => 'required',
+            'advance_money' => 'required',
+            'customer' => 'required'
+        ]);
+        $application = new applicatoin;
+        $application->destination = $request->destination;
+        $application->visa_type = $request->vt;
+        $application->total = $request->application_charges;
+        $application->advance = $request->advance_money;
+        $application->pending = $request->application_charges - $request->advance_money;
+        $application->client_id = $request->customer;
+        $application->save();
+        return redirect()->back()->with('message','Application Create Successfully');
+        
     }
 
 }
