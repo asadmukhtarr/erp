@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\client;
 use App\Models\applicatoin;
-
+use Carbon\Carbon;
 class pagesController extends Controller
 {
     // dashboard ..
@@ -62,7 +62,8 @@ class pagesController extends Controller
     }
     // applicatoins
     public function applications(){
-        return view('admin.applications.applications');
+        $applications = applicatoin::all();
+        return view('admin.applications.applications',compact('applications'));
     }
     // create applications ..
     public function create_application(){
@@ -90,6 +91,13 @@ class pagesController extends Controller
         $application->pending = $request->application_charges - $request->advance_money;
         $application->client_id = $request->customer;
         $application->save();
+        $id    = $application->id;
+        $month = Carbon::now()->format('m');
+        $year  = Carbon::now()->format('y');
+        $code  = "ERP/".$month.'/'.$year.'/'.$id;
+        $app   = applicatoin::find($id);
+        $app->application_id = $code;
+        $app->save();
         return redirect()->back()->with('message','Application Create Successfully');
         
     }
