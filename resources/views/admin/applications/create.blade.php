@@ -10,7 +10,7 @@
             <i class="fa fa-envelope"></i> Create Application 
         </div>
         <div class="card-body">
-            <form action="{{ route('submit.application') }}" method="post">
+            <form action="{{ route('submit.application') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-lg-6">
@@ -46,6 +46,15 @@
                             @endforeach
                         </select>
                     </div>
+                </div> <br />
+                <div class="form-group">
+                    <label for="">Upload File</label>
+                    <input type="file" name="pdffile"> <br />
+                    @error('pdffile')
+                    <font color="red"><b>
+                        {{ $message }}
+                    </b></font>
+                    @enderror
                 </div>
                 <div class="row mt-5">
                     <div class="col-lg-12">

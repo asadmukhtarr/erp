@@ -29,7 +29,7 @@ class pagesController extends Controller
             'email' => 'required|unique:clients',
             'wa' => 'required|unique:clients',
             'city' => 'required',
-            'address' => 'required'
+            'address' => 'required',
         ]);
         $client = new client;
         $client->name = $request->name;
@@ -39,6 +39,13 @@ class pagesController extends Controller
         $client->address = $request->address;
         $client->save();
         return redirect(route('admin.customers'))->with('message','Client Is Added Successfully');
+    }
+
+    // cutomer ..
+    public function customer($id){
+        $applications = applicatoin::where('client_id',$id)->get();
+        $client = client::find($id);
+        return view('admin.customers.profile',compact('applications','client'));
     }
     public function salman($id){
         $client = client::find($id);
@@ -67,7 +74,7 @@ class pagesController extends Controller
     }
     // create applications ..
     public function create_application(){
-        $customers = client::all();
+        $customers = client::all(); // client ..
         return view('admin.applications.create',compact('customers'));
     }
     // settings 
@@ -81,8 +88,12 @@ class pagesController extends Controller
             'vt' => 'required',
             'application_charges' => 'required',
             'advance_money' => 'required',
-            'customer' => 'required'
+            'customer' => 'required',
+            'pdffile' => 'required'
         ]);
+        // hasfile is for check value ..
+        $file = time().".".$request->file('pdffile')->getClientOriginalExtension();
+        $name = $request->file('pdffile')->storeAs('applications',$file,'public');
         $application = new applicatoin;
         $application->destination = $request->destination;
         $application->visa_type = $request->vt;
@@ -90,6 +101,7 @@ class pagesController extends Controller
         $application->advance = $request->advance_money;
         $application->pending = $request->application_charges - $request->advance_money;
         $application->client_id = $request->customer;
+        $application->documents = $file;
         $application->save();
         $id    = $application->id;
         $month = Carbon::now()->format('m');

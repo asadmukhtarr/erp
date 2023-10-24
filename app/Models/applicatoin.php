@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class applicatoin extends Model
 {
     use HasFactory;
+    public function client(){
+        return $this->belongsTo(client::class);
+    }
 }

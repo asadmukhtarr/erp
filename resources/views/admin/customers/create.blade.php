@@ -10,7 +10,7 @@
             <i class="fa fa-user-circle"></i> Create Customer
         </div>
         <div class="card-body">
-            <form action="{{ route('save.customer') }}" method="post">
+            <form action="{{ route('save.customer') }}" method="post" >
                 @csrf
                 <div class="form-group">
                     <label for="">Name</label>
